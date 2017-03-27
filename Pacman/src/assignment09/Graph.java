@@ -13,7 +13,7 @@ import java.util.HashSet;
  */
 public class Graph {
 
-	private Node[] vertices;
+	private ArrayList<Node> vertices;
 
 	private int edges;
 
@@ -23,7 +23,7 @@ public class Graph {
 	 * @author Mark Van der Merwe and Andrew Haas
 	 */
 	private class Node {
-
+		
 		boolean visited = false;
 		private HashSet<Integer> adjacent;
 
@@ -46,7 +46,8 @@ public class Graph {
 		/**
 		 * Add an edge for this Node.
 		 * 
-		 * @param Node2 - Node index to connect to.
+		 * @param Node2
+		 *            - Node index to connect to.
 		 */
 		public void addAdjacent(int Node2) {
 			adjacent.add(Node2);
@@ -60,7 +61,11 @@ public class Graph {
 	 *            - number of vertices.
 	 */
 	public Graph(int size) {
-		vertices = new Node[size];
+		vertices = new ArrayList<>(size);
+	}
+
+	public void addVertex(int position) {
+		vertices.set(position, new Node());
 	}
 
 	/**
@@ -71,10 +76,22 @@ public class Graph {
 	 * @param Node2
 	 *            - position of second node.
 	 */
-	public void addEdge(int Node1, int Node2) {
-		vertices[Node1].addAdjacent(Node2);
-		vertices[Node2].addAdjacent(Node1);
+	public void addEdge(int node1, int node2) {
+		vertices.get(node1).addAdjacent(node2);
+		vertices.get(node2).addAdjacent(node1);
 		edges++;
+	}
+	
+	/**
+	 * Adds multiple edges for a given Node.
+	 * 
+	 * @param node
+	 * @param adjacentNodes
+	 */
+	public void addEdges(int node, int[] adjacentNodes) {
+		for(int adjacentNode: adjacentNodes) {
+			addEdge(node, adjacentNode);
+		}
 	}
 
 	/**
@@ -85,7 +102,7 @@ public class Graph {
 	 * @return - adjacent nodes to provided Node.
 	 */
 	public HashSet<Integer> getAdjacent(int Node) {
-		return vertices[Node].getAdjacent();
+		return vertices.get(Node).getAdjacent();
 	}
 
 	/**
@@ -103,7 +120,7 @@ public class Graph {
 	 * @return num of vertices.
 	 */
 	public int numOfVertices() {
-		return vertices.length;
+		return vertices.size();
 	}
 
 	/**
@@ -114,7 +131,18 @@ public class Graph {
 	 * @return - Node at index.
 	 */
 	public Node getNode(int nodeIndex) {
-		return vertices[nodeIndex];
+		return vertices.get(nodeIndex);
+	}
+
+	/**
+	 * To string for debug purposes. Points each node to its adjacents.
+	 */
+	public String toString() {
+		String toString = "";
+		for (int index = 0; index < vertices.size(); index++) {
+			toString += index + " -> " + vertices.get(index).getAdjacent().toString();
+		}
+		return toString;
 	}
 
 }
