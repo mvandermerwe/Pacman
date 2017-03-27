@@ -65,7 +65,7 @@ public class Graph {
 	}
 
 	public void addVertex(int position) {
-		vertices.set(position, new Node());
+		vertices.add(position, new Node());
 	}
 
 	/**
@@ -123,16 +123,7 @@ public class Graph {
 		return vertices.size();
 	}
 
-	/**
-	 * Getter for Node at index.
-	 * 
-	 * @param nodeIndex
-	 *            - index of Node.
-	 * @return - Node at index.
-	 */
-	public Node getNode(int nodeIndex) {
-		return vertices.get(nodeIndex);
-	}
+
 
 	/**
 	 * To string for debug purposes. Points each node to its adjacents.
@@ -140,7 +131,7 @@ public class Graph {
 	public String toString() {
 		String toString = "";
 		for (int index = 0; index < vertices.size(); index++) {
-			toString += index + " -> " + vertices.get(index).getAdjacent().toString();
+			toString += index + " -> " + vertices.get(index).getAdjacent().toString() + "\n";
 		}
 		return toString;
 	}
