@@ -9,22 +9,48 @@ import java.util.HashSet;
 /**
  * Graph object, links nodes with edges.
  * 
- * @author markvandermerwe
+ * @author Mark Van der Merwe and Andrew Haas
  */
 public class Graph {
 
 	private Node[] vertices;
-	private ArrayList<HashSet<Integer>> adjacent;
 
 	private int edges;
 
 	/**
 	 * Node object, referring to the vertices of our Graph.
 	 * 
-	 * @author markvandermerwe
+	 * @author Mark Van der Merwe and Andrew Haas
 	 */
 	private class Node {
 
+		boolean visited = false;
+		private HashSet<Integer> adjacent;
+
+		/**
+		 * Default constructor.
+		 */
+		public Node() {
+			adjacent = new HashSet<>();
+		}
+
+		/**
+		 * Return the set of adjacent Nodes.
+		 * 
+		 * @return - set of adjacent Nodes.
+		 */
+		public HashSet<Integer> getAdjacent() {
+			return adjacent;
+		}
+
+		/**
+		 * Add an edge for this Node.
+		 * 
+		 * @param Node2 - Node index to connect to.
+		 */
+		public void addAdjacent(int Node2) {
+			adjacent.add(Node2);
+		}
 	}
 
 	/**
@@ -35,7 +61,6 @@ public class Graph {
 	 */
 	public Graph(int size) {
 		vertices = new Node[size];
-		adjacent = new ArrayList<HashSet<Integer>>(size);
 	}
 
 	/**
@@ -47,8 +72,8 @@ public class Graph {
 	 *            - position of second node.
 	 */
 	public void addEdge(int Node1, int Node2) {
-		adjacent.get(Node1).add(Node2);
-		adjacent.get(Node2).add(Node1);
+		vertices[Node1].addAdjacent(Node2);
+		vertices[Node2].addAdjacent(Node1);
 		edges++;
 	}
 
@@ -60,7 +85,7 @@ public class Graph {
 	 * @return - adjacent nodes to provided Node.
 	 */
 	public HashSet<Integer> getAdjacent(int Node) {
-		return adjacent.get(Node);
+		return vertices[Node].getAdjacent();
 	}
 
 	/**
