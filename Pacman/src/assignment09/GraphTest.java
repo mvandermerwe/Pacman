@@ -40,7 +40,7 @@ public class GraphTest {
 	@Test
 	public void testConstructor(){
 		System.out.println(graph.toString());
-		assertEquals("0 -> [2, 1]\n1 -> [0, 2]\n2 -> [0, 3, 1]\n3 -> [2]\n",graph.toString());
+		assertEquals("0 -> [1, 2]\n1 -> [2, 0]\n2 -> [1, 3, 0]\n3 -> [2]\n",graph.toString());
 		assertEquals("",zeroGraph.toString());
 	}
 	/**
@@ -75,6 +75,23 @@ public class GraphTest {
 	public void testNumOfEdges(){
 		assertEquals(4, graph.numOfVertices());
 		assertEquals(0, zeroGraph.numOfEdges());
+	}
+	
+	/**
+	 * Tests to make sure that getVertex correctly 
+	 * returns the right Node.
+	 */
+	@Test
+	public void testGetVertice(){
+		Graph graph2 = new Graph(4);
+		for(int i = 0; i<4;i++){
+			graph2.addVertex(i);
+		}
+		graph2.addEdge(0, 2);
+		graph2.addEdge(1, 2);
+		graph2.addEdge(0, 1);
+		graph2.addEdge(3, 2);
+		assertEquals(graph2.getVertex(3).toString(), graph.getVertex(3).toString());
 	}
 	
 
