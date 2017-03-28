@@ -42,11 +42,11 @@ public class BreadthFirstSearch {
 	public BreadthFirstSearch(Graph graph, int start, int finish) {
 		this.graph = graph;
 		this.start = start;
-		marked[start] = true;
 		this.finish = finish;
 
 		marked = new boolean[graph.numOfVertices()];
 		edgeTo = new Integer[graph.numOfVertices()];
+		marked[start] = true;
 	}
 
 	/**
@@ -94,11 +94,11 @@ public class BreadthFirstSearch {
 	 *            - where the path leads to from the start.
 	 * @return - integer array path from start to the path end.
 	 */
-	public Integer[] generatePath(int pathEnd) {
+	public Integer[] generatePath(Integer pathEnd) {
 		ArrayList<Integer> path = new ArrayList<Integer>();
 
 		// Follow the path back to the seed.
-		while (edgeTo[pathEnd] != null) {
+		while (pathEnd != null) {
 			path.add(0, pathEnd);
 			pathEnd = edgeTo[pathEnd];
 		}
