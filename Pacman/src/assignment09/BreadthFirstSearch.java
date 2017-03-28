@@ -70,15 +70,15 @@ public class BreadthFirstSearch {
 					continue;
 				}
 
-				// If we find our finish node, create and return our path.
-				if (adjacentNode == finish) {
-					return generatePath(adjacentNode);
-				}
-
 				// Add new nodes to the queue.
 				nodes.add(adjacentNode);
 				marked[adjacentNode] = true;
 				edgeTo[adjacentNode] = node;
+				
+				// If we find our finish node, create and return our path.
+				if (adjacentNode == finish) {
+					return generatePath(adjacentNode);
+				}
 			}
 		}
 		// If we don't find it return a null path.
