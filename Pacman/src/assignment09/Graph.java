@@ -22,16 +22,29 @@ public class Graph {
 	 * 
 	 * @author Mark Van der Merwe and Andrew Haas
 	 */
-	private class Node {
-		
-		boolean visited = false;
-		private HashSet<Integer> adjacent;
+	class Node {
+
+		int id;
+
+		boolean marked = false;
+		Node back;
+		private HashSet<Node> adjacent;
 
 		/**
 		 * Default constructor.
 		 */
-		public Node() {
+		public Node(int id) {
 			adjacent = new HashSet<>();
+			this.id = id;
+		}
+
+		/**
+		 * Returns the Node that points to this one.
+		 * 
+		 * @return - node that points to this one.
+		 */
+		public Node getBack() {
+			return back;
 		}
 
 		/**
@@ -39,7 +52,7 @@ public class Graph {
 		 * 
 		 * @return - set of adjacent Nodes.
 		 */
-		public HashSet<Integer> getAdjacent() {
+		public HashSet<Node> getAdjacent() {
 			return adjacent;
 		}
 
@@ -49,8 +62,12 @@ public class Graph {
 		 * @param Node2
 		 *            - Node index to connect to.
 		 */
-		public void addAdjacent(int Node2) {
+		public void addAdjacent(Node Node2) {
 			adjacent.add(Node2);
+		}
+
+		public String toString() {
+			return String.valueOf(id);
 		}
 	}
 
@@ -65,7 +82,7 @@ public class Graph {
 	}
 
 	public void addVertex(int position) {
-		vertices.add(position, new Node());
+		vertices.add(position, new Node(position));
 	}
 
 	/**
@@ -77,11 +94,11 @@ public class Graph {
 	 *            - position of second node.
 	 */
 	public void addEdge(int node1, int node2) {
-		vertices.get(node1).addAdjacent(node2);
-		vertices.get(node2).addAdjacent(node1);
+		vertices.get(node1).addAdjacent(vertices.get(node2));
+		vertices.get(node2).addAdjacent(vertices.get(node1));
 		edges++;
 	}
-	
+
 	/**
 	 * Adds multiple edges for a given Node.
 	 * 
@@ -89,7 +106,7 @@ public class Graph {
 	 * @param adjacentNodes
 	 */
 	public void addEdges(int node, int[] adjacentNodes) {
-		for(int adjacentNode: adjacentNodes) {
+		for (int adjacentNode : adjacentNodes) {
 			addEdge(node, adjacentNode);
 		}
 	}
@@ -101,8 +118,12 @@ public class Graph {
 	 *            - Node whose adjacents we want to find.
 	 * @return - adjacent nodes to provided Node.
 	 */
-	public HashSet<Integer> getAdjacent(int Node) {
+	public HashSet<Node> getAdjacent(int Node) {
 		return vertices.get(Node).getAdjacent();
+	}
+	
+	public Node getVertex(int position) {
+		return vertices.get(position);
 	}
 
 	/**
@@ -122,8 +143,6 @@ public class Graph {
 	public int numOfVertices() {
 		return vertices.size();
 	}
-
-
 
 	/**
 	 * To string for debug purposes. Points each node to its adjacents.

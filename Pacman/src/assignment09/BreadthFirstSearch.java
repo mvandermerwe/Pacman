@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Queue;
 
+import assignment09.Graph.Node;
+
 /**
  * Breadth first search algorithm to find the shortest path between two points
  * in our pacman packs.
@@ -15,13 +17,6 @@ import java.util.Queue;
  * @author markvandermerwe
  */
 public class BreadthFirstSearch {
-
-	// Nifty Changes.
-	// More nifty changes.
-	// New nifty changes.
-
-	private boolean[] marked;
-	private Integer[] edgeTo;
 
 	private final int start;
 	private final int finish;
@@ -43,10 +38,8 @@ public class BreadthFirstSearch {
 		this.graph = graph;
 		this.start = start;
 		this.finish = finish;
-
-		marked = new boolean[graph.numOfVertices()];
-		edgeTo = new Integer[graph.numOfVertices()];
-		marked[start] = true;
+		
+		graph.getVertex(start).marked = true;
 	}
 
 	/**
@@ -57,26 +50,26 @@ public class BreadthFirstSearch {
 	 */
 	public Integer[] breadthFirstSearch() {
 		// Add new nodes and dequeue old ones.
-		Queue<Integer> nodes = new ArrayDeque<Integer>();
-		nodes.add(start);
+		Queue<Node> nodes = new ArrayDeque<Node>();
+		nodes.add(graph.getVertex(start));
 
 		while (!nodes.isEmpty()) {
 			// Continue to add new nodes and dequeue old ones.
-			int node = nodes.remove();
-			HashSet<Integer> adjacentTo = graph.getAdjacent(node);
-			for (Integer adjacentNode : adjacentTo) {
+			Node node = nodes.remove();
+			HashSet<Node> adjacentTo = graph.getAdjacent(node.id);
+			for (Node adjacentNode : adjacentTo) {
 				// If we've already seen this node, skip over it.
-				if (marked[adjacentNode]) {
+				if (adjacentNode.marked) {
 					continue;
 				}
 
 				// Add new nodes to the queue.
 				nodes.add(adjacentNode);
-				marked[adjacentNode] = true;
-				edgeTo[adjacentNode] = node;
+				adjacentNode.marked = true;
+				adjacentNode.back = node;
 				
 				// If we find our finish node, create and return our path.
-				if (adjacentNode == finish) {
+				if (adjacentNode.id == finish) {
 					return generatePath(adjacentNode);
 				}
 			}
@@ -94,13 +87,13 @@ public class BreadthFirstSearch {
 	 *            - where the path leads to from the start.
 	 * @return - integer array path from start to the path end.
 	 */
-	public Integer[] generatePath(Integer pathEnd) {
+	public Integer[] generatePath(Node pathEnd) {
 		ArrayList<Integer> path = new ArrayList<Integer>();
 
 		// Follow the path back to the seed.
 		while (pathEnd != null) {
-			path.add(0, pathEnd);
-			pathEnd = edgeTo[pathEnd];
+			path.add(0, pathEnd.id);
+			pathEnd = pathEnd.back;
 		}
 
 		Integer[] pathArray = new Integer[path.size()];

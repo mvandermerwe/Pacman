@@ -39,7 +39,7 @@ public class BreadthFirstSearchTest {
 	public void testGeneratePath() {
 		bfs.breadthFirstSearch();
 		Integer[] array = new Integer[] {0,2,3};
-		assertArrayEquals(array,bfs.generatePath(3));
+		assertArrayEquals(array,bfs.generatePath(graph.getVertex(3)));
 		
 	}
 	

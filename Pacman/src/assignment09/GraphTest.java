@@ -40,7 +40,7 @@ public class GraphTest {
 	@Test
 	public void testConstructor(){
 		System.out.println(graph.toString());
-		assertEquals("0 -> [1, 2]\n1 -> [0, 2]\n2 -> [0, 1, 3]\n3 -> [2]\n",graph.toString());
+		assertEquals("0 -> [2, 1]\n1 -> [0, 2]\n2 -> [0, 3, 1]\n3 -> [2]\n",graph.toString());
 		assertEquals("",zeroGraph.toString());
 	}
 	/**
