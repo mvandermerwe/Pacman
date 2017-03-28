@@ -80,6 +80,14 @@ public class Graph {
 	public Graph(int size) {
 		vertices = new ArrayList<>(size);
 	}
+	
+	/**
+	 * Constructor that defines the size of the graph.
+	 * 
+	 */
+	public Graph() {
+		vertices = new ArrayList<>();
+	}
 
 	public void addVertex(int position) {
 		vertices.add(position, new Node(position));
