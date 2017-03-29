@@ -103,7 +103,6 @@ public class PathFinder {
 			mazeReader = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
-			e.printStackTrace();
 			System.exit(0);
 		}
 
