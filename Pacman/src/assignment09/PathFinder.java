@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -21,7 +22,7 @@ public class PathFinder {
 		solveMaze("mazes/tinyMaze.txt", "");
 	}
 	
-	private static char[][] maze;
+	private static int[][] maze;
 	private static int[] dimensions;
 	private static BufferedReader mazeReader;
 	
@@ -32,29 +33,30 @@ public class PathFinder {
 		readFromFile(inputFileName);
 		
 		Graph mazeGraph = new Graph();
-		int position = 0;
+		
 		for(int row = 0; row < dimensions[0]; row++) {
 			for(int col = 0; col < dimensions[1]; col++) {
-				if(maze[row][col] != 'X') {
-					mazeGraph.addVertex(position);
-					if(maze[row][col] == 'S') {
-						start = position;
-					}else if(maze[row][col] == 'G') {
-						finish = position;
-					}
-					position++;
+				if(maze[row][col] != -1) {
+					mazeGraph.addVertex(maze[row][col]);
 				}
 			}
 		}
 		
-		position = 0;
-		for(int row = 0; row < dimensions[0]; row++) {
-			for(int col = 0; col < dimensions[1]; col++) {
-				if(maze[row][col] != 'X') {
-					if(maze[row+1][col] != 'X') {
-						mazeGraph.addEdge(position, node2);
+		for(int row = 1; row < dimensions[0]-1; row++) {
+			for(int col = 1; col < dimensions[1]-1; col++) {
+				if(maze[row][col] != -1) {
+					if(maze[row+1][col] != -1) {
+						mazeGraph.addEdge(maze[row][col], maze[row+1][col]);
 					}
-					position++;
+					if(maze[row-1][col] != -1) {
+						mazeGraph.addEdge(maze[row][col], maze[row-1][col]);
+					}
+					if(maze[row][col+1] != -1) {
+						mazeGraph.addEdge(maze[row][col], maze[row][col+1]);
+					}
+					if(maze[row][col-1] != -1) {
+						mazeGraph.addEdge(maze[row][col], maze[row][col-1]);
+					}
 				}
 			}
 		}
@@ -62,7 +64,7 @@ public class PathFinder {
 		
 		BreadthFirstSearch search = new BreadthFirstSearch(mazeGraph, start, finish);
 		Integer[] path = search.breadthFirstSearch();
-		System.out.println(path.toString());
+		System.out.println(Arrays.toString(path));
 	}
 	
 	public static void readFromFile(String file){
@@ -82,7 +84,7 @@ public class PathFinder {
 				dimensions[index] = scanner.nextInt();
 			}
 			
-			maze = new char[dimensions[0]][dimensions[1]];
+			maze = new int[dimensions[0]][dimensions[1]];
 		} catch (IOException e) {
 			System.out.println("Line broke cause of something");
 			e.printStackTrace();
@@ -90,8 +92,25 @@ public class PathFinder {
 		}
 		
 		try {
+			int position = 0;
 			for(int row = 0; row < dimensions[0]; row++) {
-				mazeReader.read(maze[row]);
+				for(int col = 0; col < dimensions[1]; col++) {
+					char letter = (char) mazeReader.read();
+					if(letter == ' ') {
+						maze[row][col] = position;
+						position++;
+					}else if(letter == 'X') {
+						maze[row][col] = -1;
+					}else if(letter == 'S') {
+						start = position;
+						maze[row][col] = position;
+						position++;
+					}else if(letter == 'G') {
+						finish = position;
+						maze[row][col] = position;
+						position++;
+					}
+				}
 				mazeReader.skip(1);
 			}
 		} catch (IOException e) {
