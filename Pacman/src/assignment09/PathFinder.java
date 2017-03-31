@@ -6,6 +6,7 @@ package assignment09;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -19,7 +20,8 @@ import java.util.Scanner;
 public class PathFinder {
 
 	public static void main(String[] args) {
-		solveMaze("mazes/tinyMaze.txt", "");
+		System.out.println("Writing from " + args[0] + " to " + args[1]);
+		solveMaze(args[0],args[1]);
 	}
 
 	private static int[][] maze;
@@ -78,12 +80,14 @@ public class PathFinder {
 				}
 			}
 		}
-		System.out.println(mazeGraph.toString());
+		// System.out.println(mazeGraph.toString());
 
 		// Perform breadth first search on our start and finish.
 		BreadthFirstSearch search = new BreadthFirstSearch(mazeGraph, start, finish);
 		Integer[] path = search.breadthFirstSearch();
-		System.out.println(Arrays.toString(path));
+		// System.out.println(Arrays.toString(path));
+
+		writeSolutionToFile(path, outputFileName);
 	}
 
 	/**
@@ -117,6 +121,7 @@ public class PathFinder {
 			}
 
 			maze = new int[dimensions[0]][dimensions[1]];
+			scanner.close();
 		} catch (IOException e) {
 			System.out.println("First line not set up correctly.");
 			System.exit(0);
@@ -154,6 +159,71 @@ public class PathFinder {
 		} catch (IOException e) {
 			System.out.println("Failed to read from file.");
 			System.exit(0);
+		}
+	}
+
+	/**
+	 * Writes the provided solution path to the provided output file.
+	 * 
+	 * @param path
+	 *            - path from the start to the finish.
+	 * @param outputFileName
+	 *            - name of the output file.
+	 */
+	public static void writeSolutionToFile(Integer[] path, String outputFileName) {
+		
+		StringBuilder solvedMaze = new StringBuilder();
+
+		// Sort the path so that we can easily add dots by iterating through our
+		// array.
+		if(path != null) {
+			Arrays.sort(path);
+		} else {
+			path = new Integer[1];
+			path[0] = -1;
+		}
+		
+		// Index corresponds to the index in the path array.
+		int index = 0;
+
+		for (int row = 0; row < dimensions[0]; row++) {
+			for (int col = 0; col < dimensions[1]; col++) {
+				// Convert each position to what we want it to be in the output
+				// file.
+				if (maze[row][col] == -1) {
+					solvedMaze.append('X');
+				} else if (maze[row][col] == start) {
+					solvedMaze.append('S');
+					if (index < path.length - 1) {
+						index++;
+					}
+				} else if (maze[row][col] == finish) {
+					solvedMaze.append('G');
+					if (index < path.length - 1) {
+						index++;
+					}
+				} else if (maze[row][col] == path[index]) {
+					solvedMaze.append('.');
+					if (index < path.length - 1) {
+						index++;
+					}
+				} else {
+					solvedMaze.append(' ');
+				}
+			}
+			solvedMaze.append("\n");
+		}
+
+		// Write our solution to the actual file.
+		try {
+			FileWriter txtWriter = new FileWriter(outputFileName);
+			txtWriter.write(solvedMaze.toString());
+			txtWriter.close();
+			System.out.println("Solution written to " + outputFileName);
+		} catch (IOException e) {
+			// If we can't write, dump the info into the console.
+			System.out.println("Unable to write to file. Maze dump:");
+			System.out.print(solvedMaze.toString());
 		}
 	}
 
