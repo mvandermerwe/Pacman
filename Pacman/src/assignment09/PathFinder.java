@@ -15,16 +15,17 @@ import java.util.Scanner;
  * Determines the shortest path given a scenario using Graph path finding,
  * specifically Breadth First Search.
  * 
- * @author markvandermerwe
+ * @author Mark Van der Merwe and Andrew Haas
  */
 public class PathFinder {
 
+	
 	public static void main(String[] args) {
 		System.out.println("Writing from " + args[0] + " to " + args[1]);
 		solveMaze(args[0],args[1]);
 	}
 
-	private static int[][] maze;
+	static int[][] maze;
 	private static int[] dimensions;
 	private static BufferedReader mazeReader;
 

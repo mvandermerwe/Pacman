@@ -14,7 +14,7 @@ import assignment09.Graph.Node;
  * Breadth first search algorithm to find the shortest path between two points
  * in our pacman packs.
  * 
- * @author markvandermerwe
+ * @author Mark Van der Merwe and Andrew Haas
  */
 public class BreadthFirstSearch {
 
@@ -38,7 +38,7 @@ public class BreadthFirstSearch {
 		this.graph = graph;
 		this.start = start;
 		this.finish = finish;
-		
+
 		graph.getVertex(start).marked = true;
 	}
 
@@ -50,6 +50,7 @@ public class BreadthFirstSearch {
 	 */
 	public Integer[] breadthFirstSearch() {
 		// Add new nodes and dequeue old ones.
+		// Use ArrayDeque because is faster as a Queue than LinkedList.
 		Queue<Node> nodes = new ArrayDeque<Node>();
 		nodes.add(graph.getVertex(start));
 
@@ -67,7 +68,7 @@ public class BreadthFirstSearch {
 				nodes.add(adjacentNode);
 				adjacentNode.marked = true;
 				adjacentNode.back = node;
-				
+
 				// If we find our finish node, create and return our path.
 				if (adjacentNode.id == finish) {
 					return generatePath(adjacentNode);
