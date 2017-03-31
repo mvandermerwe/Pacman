@@ -6,7 +6,9 @@ package assignment09;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Queue;
+import java.util.TreeSet;
 
 import assignment09.Graph.Node;
 
@@ -57,7 +59,7 @@ public class BreadthFirstSearch {
 		while (!nodes.isEmpty()) {
 			// Continue to add new nodes and dequeue old ones.
 			Node node = nodes.remove();
-			HashSet<Node> adjacentTo = graph.getAdjacent(node.id);
+			LinkedHashSet<Node> adjacentTo = graph.getAdjacent(node.id);
 			for (Node adjacentNode : adjacentTo) {
 				// If we've already seen this node, skip over it.
 				if (adjacentNode.marked) {

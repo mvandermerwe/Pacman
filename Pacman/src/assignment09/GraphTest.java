@@ -16,12 +16,15 @@ import org.junit.Test;
 public class GraphTest {
 	Graph graph;
 	Graph zeroGraph;
+	Graph oneGraph;
 
 	/**
 	 * Sets up the graphs that are to be used in the test methods.
 	 */
 	@Before
 	public void createGraph() {
+		// Create three graphs to test with, one with 4 vertices, one with 1,
+		// one with 0.
 		graph = new Graph(4);
 		for (int i = 0; i < 4; i++) {
 			graph.addVertex(i);
@@ -30,7 +33,11 @@ public class GraphTest {
 		graph.addEdge(1, 2);
 		graph.addEdge(0, 1);
 		graph.addEdge(3, 2);
+
 		zeroGraph = new Graph(0);
+
+		oneGraph = new Graph(1);
+		oneGraph.addVertex(0);
 
 	}
 
@@ -39,9 +46,12 @@ public class GraphTest {
 	 */
 	@Test
 	public void testConstructor() {
-		System.out.println(graph.toString());
-		assertEquals("0 -> [1, 2]\n1 -> [2, 0]\n2 -> [1, 3, 0]\n3 -> [2]\n", graph.toString());
+		// Test our constructor is working properly by looking at the toString.
+		assertEquals("0 -> [2, 1]\n1 -> [2, 0]\n2 -> [0, 1, 3]\n3 -> [2]\n", graph.toString());
+
 		assertEquals("", zeroGraph.toString());
+
+		assertEquals("0 -> []\n", oneGraph.toString());
 	}
 
 	/**
@@ -49,13 +59,17 @@ public class GraphTest {
 	 */
 	@Test
 	public void testGetAdjacent() {
+		// Use size of adjacent set to make sure adding edges works correctly.
 		assertEquals(2, graph.getAdjacent(0).size());
+
 		try {
 			zeroGraph.getAdjacent(0).size();
 			fail("Shouldn't find anything.");
 		} catch (Exception e) {
 			// Test passes.
 		}
+
+		assertEquals(0, oneGraph.getAdjacent(0).size());
 	}
 
 	/**
@@ -66,7 +80,7 @@ public class GraphTest {
 	public void testNumOfVertices() {
 		assertEquals(4, graph.numOfVertices());
 		assertEquals(0, zeroGraph.numOfVertices());
-
+		assertEquals(1, oneGraph.numOfVertices());
 	}
 
 	/**
@@ -77,6 +91,7 @@ public class GraphTest {
 	public void testNumOfEdges() {
 		assertEquals(4, graph.numOfVertices());
 		assertEquals(0, zeroGraph.numOfEdges());
+		assertEquals(0, oneGraph.numOfEdges());
 	}
 
 	/**
@@ -84,15 +99,16 @@ public class GraphTest {
 	 */
 	@Test
 	public void testGetVertice() {
-		Graph graph2 = new Graph(4);
-		for (int i = 0; i < 4; i++) {
-			graph2.addVertex(i);
+		assertEquals("3", graph.getVertex(3).toString());
+
+		try {
+			zeroGraph.getVertex(0);
+			fail("Should've thrown error, array index doesn't work.");
+		} catch (IndexOutOfBoundsException e) {
+			// Test passes.
 		}
-		graph2.addEdge(0, 2);
-		graph2.addEdge(1, 2);
-		graph2.addEdge(0, 1);
-		graph2.addEdge(3, 2);
-		assertEquals(graph2.getVertex(3).toString(), graph.getVertex(3).toString());
+
+		assertEquals("0", oneGraph.getVertex(0).toString());
 	}
 
 }

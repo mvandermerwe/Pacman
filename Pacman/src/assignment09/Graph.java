@@ -5,6 +5,8 @@ package assignment09;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 /**
  * Graph object, links nodes with edges.
@@ -28,13 +30,13 @@ public class Graph {
 
 		boolean marked = false;
 		Node back;
-		private HashSet<Node> adjacent;
+		private LinkedHashSet<Node> adjacent;
 
 		/**
 		 * Default constructor.
 		 */
 		public Node(int id) {
-			adjacent = new HashSet<>();
+			adjacent = new LinkedHashSet<>();
 			this.id = id;
 		}
 
@@ -52,7 +54,7 @@ public class Graph {
 		 * 
 		 * @return - set of adjacent Nodes.
 		 */
-		public HashSet<Node> getAdjacent() {
+		public LinkedHashSet<Node> getAdjacent() {
 			return adjacent;
 		}
 
@@ -126,7 +128,7 @@ public class Graph {
 	 *            - Node whose adjacents we want to find.
 	 * @return - adjacent nodes to provided Node.
 	 */
-	public HashSet<Node> getAdjacent(int Node) {
+	public LinkedHashSet<Node> getAdjacent(int Node) {
 		return vertices.get(Node).getAdjacent();
 	}
 	
