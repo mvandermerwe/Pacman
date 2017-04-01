@@ -1,5 +1,13 @@
 /**
- * 
+ * I pledge that the work done here was my own and that I have learned how to write
+this program (such that I could throw it out and restart and finish it in a timely
+manner).  I am not turning in any work that I cannot understand, describe, or
+recreate.  Any sources (e.g., web sites) other than the lecture that I used to
+help write the code are cited in my work.  When working with a partner, I have
+contributed an equal share and understand all the submitted work.  Further, I have
+helped write all the code assigned as pair-programming and reviewed all code that
+was written separately.
+	                      (Mark Van der Merwe, Andrew Haas)
  */
 package assignment09;
 
@@ -19,11 +27,8 @@ import java.util.Scanner;
  */
 public class PathFinder {
 
-	
-	public static void main(String[] args) {
-		//System.out.println("Writing from " + args[0] + " to " + args[1]);
-		solveMaze("mazes/tinyMaze.txt", "mazeSolution/tinyMazeSolution.txt");
-	}
+	private static int runCounter;
+	private static double[] runData = new double[100];
 
 	static int[][] maze;
 	private static int[] dimensions;
@@ -32,6 +37,34 @@ public class PathFinder {
 
 	static int start;
 	static int finish;
+
+	private static double wallDensity;
+
+	public static void main(String[] args) {
+		// Below is used in the shell script we wrote -> grabs data from command
+		// line call.
+		// System.out.println("Writing from " + args[0] + " to " + args[1]);
+
+		// Change the names of the input and output files here to solve
+		// different maps.
+		solveMaze("mazes/map1.txt", "mazeSolutions/map1Solution.txt");
+
+		// The code below is what we used to run the tests on wall density vs.
+		// time.
+		// Run our test 100 times to time compared to wall density.
+		for (int run = 0; run < 100; run++) {
+			solveMaze("mazes/map1.txt", "mazeSolutions/map1Solution.txt");
+			runCounter++;
+		}
+
+		double total = 0;
+		// Average time.
+		for (int run = 0; run < 100; run++) {
+			total += runData[run];
+		}
+		System.out.println(wallDensity + ", " + (total / 100));
+
+	}
 
 	/**
 	 * Solve the pacman maze by turning the provided maze file into a graph,
@@ -82,11 +115,18 @@ public class PathFinder {
 				}
 			}
 		}
-		System.out.println(mazeGraph.toString());
+		// System.out.println(mazeGraph.toString());
 
 		// Perform breadth first search on our start and finish.
 		BreadthFirstSearch search = new BreadthFirstSearch(mazeGraph, start, finish);
+
+		//Time our BFS for empirical analysis.
+		long startTime = System.nanoTime();
 		Integer[] path = search.breadthFirstSearch();
+		long endTime = System.nanoTime();
+		// System.out.println(wallDensity + ", " + (endTime - startTime));
+		runData[runCounter] = endTime - startTime;
+
 		// System.out.println(Arrays.toString(path));
 
 		writeSolutionToFile(path, outputFileName);
@@ -129,6 +169,8 @@ public class PathFinder {
 			System.exit(0);
 		}
 
+		int wallCount = 0;
+
 		try {
 			int position = 0;
 			for (int row = 0; row < dimensions[0]; row++) {
@@ -144,6 +186,7 @@ public class PathFinder {
 						maze[row][col] = position;
 						position++;
 					} else if (letter == 'X') {
+						wallCount++;
 						maze[row][col] = -1;
 					} else if (letter == 'S') {
 						start = position;
@@ -162,6 +205,8 @@ public class PathFinder {
 			System.out.println("Failed to read from file.");
 			System.exit(0);
 		}
+
+		wallDensity = ((double) wallCount) / (dimensions[0] * dimensions[1]);
 	}
 
 	/**
@@ -173,18 +218,18 @@ public class PathFinder {
 	 *            - name of the output file.
 	 */
 	public static void writeSolutionToFile(Integer[] path, String outputFileName) {
-		
+
 		StringBuilder solvedMaze = new StringBuilder();
 
 		// Sort the path so that we can easily add dots by iterating through our
 		// array.
-		if(path != null) {
+		if (path != null) {
 			Arrays.sort(path);
 		} else {
 			path = new Integer[1];
 			path[0] = -1;
 		}
-		
+
 		// Index corresponds to the index in the path array.
 		int index = 0;
 
