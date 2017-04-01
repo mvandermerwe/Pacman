@@ -1,0 +1,59 @@
+Your Name: Andrew Haas
+Your UID: u0493118
+The Date: 03/31/2017
+The Class Number: CS 2420
+The Assignment Number: 9
+Your partner name (when appropriate): Mark Van der Merwe, u0920663
+
+I pledge that the work done here was my own and that I have learned how to write
+this program (such that I could throw it out and restart and finish it in a timely
+manner).  I am not turning in any work that I cannot understand, describe, or
+recreate.  Any sources (e.g., web sites) other than the lecture that I used to
+help write the code are cited in my work.  When working with a partner, I have
+contributed an equal share and understand all the submitted work.  Further, I have
+helped write all the code assigned as pair-programming and reviewed all code that
+was written separately.
+	                      (Mark Van der Merwe, Andrew Haas)
+ 
+Project Summary: 
+	- Create a program to find the shortest path in a maze going from a given 
+	starting place to a goal and write it to a text file. This is to be completed by using Graphs. This 
+	file is then to be used for in the given Pacman application.
+	  
+Design Decisions :
+	- We moved breadth first search into its own class in order to 
+	make our code easier to read.
+	
+	- We decided to use Linked HashSet so that we had a fast set that 
+	returns numbers in a consistent order
+	  
+	- We decided to use ArrayDeque because according to the documentation ArrayDeque 
+	works better than LinkedList does when using it as a queue. 
+	  
+	
+	  
+Notes To the TA: 
+	- We decided to not test the writing into a new file because we write straight to the
+	file so it would be difficult to test it without significantly changing our code.
+	
+	- We created a Bash Shell script that runs a packaged version of our Java code, then takes the output and automatically
+	puts it through the Python Pacman script. You can find the script (and run it) inside the main project directory. Command
+	should be like this:
+	
+		bash solvePuzzle.sh mazes/mazeFileName.txt mazeSolutions/mazeSolutionName.txt
+		
+	This will run the algorithm and pop up with the Pacman automatically following the path which is mapped onto the maze.
+
+Problem We Faced/Encountered: 
+	- One problem we faced was when we were originally using HashSets in our Nodes 
+	and tried to use toString when testing. This would give use the values in a 
+	different order each time
+	
+	- Another problem we encountered was that we had some issues trying to map the 
+	values from the 2D array into the graph. We solved this by changing how we mapped
+	into the 2D array. We did this by mapping the index of the location as value in the 
+	2D array.
+	  
+	
+	  
+	   
