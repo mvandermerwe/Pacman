@@ -21,16 +21,17 @@ public class PathFinder {
 
 	
 	public static void main(String[] args) {
-		System.out.println("Writing from " + args[0] + " to " + args[1]);
-		solveMaze(args[0],args[1]);
+		//System.out.println("Writing from " + args[0] + " to " + args[1]);
+		solveMaze("mazes/tinyMaze.txt", "mazeSolution/tinyMazeSolution.txt");
 	}
 
 	static int[][] maze;
 	private static int[] dimensions;
 	private static BufferedReader mazeReader;
+	static Graph mazeGraph;
 
-	private static int start;
-	private static int finish;
+	static int start;
+	static int finish;
 
 	/**
 	 * Solve the pacman maze by turning the provided maze file into a graph,
@@ -51,7 +52,7 @@ public class PathFinder {
 			System.exit(0);
 		}
 
-		Graph mazeGraph = new Graph();
+		mazeGraph = new Graph();
 
 		// Add all the vertices in our maze into the graph.
 		for (int row = 0; row < dimensions[0]; row++) {
@@ -81,7 +82,7 @@ public class PathFinder {
 				}
 			}
 		}
-		// System.out.println(mazeGraph.toString());
+		System.out.println(mazeGraph.toString());
 
 		// Perform breadth first search on our start and finish.
 		BreadthFirstSearch search = new BreadthFirstSearch(mazeGraph, start, finish);
