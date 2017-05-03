@@ -47,7 +47,7 @@ public class PathFinder {
 
 		// Change the names of the input and output files here to solve
 		// different maps.
-		solveMaze("mazes/map1.txt", "mazeSolutions/map1Solution.txt");
+		solveMaze("mazes/tinyMaze.txt", "mazeSolutions/tinyMazeSolution.txt");
 
 		// The code below is what we used to run the tests on wall density vs.
 		// time.
@@ -229,6 +229,8 @@ public class PathFinder {
 			path = new Integer[1];
 			path[0] = -1;
 		}
+		
+		solvedMaze.append(String.valueOf(dimensions[0]) + " " + String.valueOf(dimensions[1]) + "\n");
 
 		// Index corresponds to the index in the path array.
 		int index = 0;
